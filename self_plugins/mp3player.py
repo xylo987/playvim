@@ -293,7 +293,7 @@ def loop():
     m = Mp3Player()
     m.open()
     path = os.path.sep.join([os.path.dirname(__file__), 'mp3s'])
-    
+
     for file in os.listdir(path):
         if file.endswith('.mp3'):
             try:
@@ -304,24 +304,11 @@ def loop():
                 print(str(e))
 
     m.start()
-    '''
-    print('\n|万万音乐> [%s] --- %s ---%d(s)|' % ( 
-            m.get_status(), 
-            m.get_title() or '',
-            (m.get_pos() or 0) / 1000))
-    '''
 
     while m.get_status() != 'quit':
         m.update_status()
         if m.get_status() == 'stop':
             m.next()
-        '''
-        print('\n|万万音乐> [%s] --- %s ---%d(s)|' % ( 
-            m.get_status(), 
-            m.get_title() or '',
-            (m.get_pos() or 0) / 1000))
-        '''
-
         time.sleep(5)
 
 
@@ -339,7 +326,6 @@ def main():
 
     signal.signal(signal.SIGALRM, interrupted)
 
-    m = Mp3Player()
     m = Mp3Player()
     m.open()
     path = os.path.sep.join([os.path.dirname(__file__), 'mp3s'])

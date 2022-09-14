@@ -21,6 +21,16 @@ vim +PlugInstall
 
 ![image](https://user-images.githubusercontent.com/111848062/189804977-3cf0bdd1-0a15-4ff9-bc6e-22754fe118b7.png)
 
+:bug:我的私人音乐盒子
+
+* `<leader>1`: 启动音乐盒子服务器
+* `<leader>2`: 开始
+* `<leader>3`: 停止播放
+* `<leader>4`: 暂停
+* `<leader>5`: 恢复
+* `<leader>6`: 下一曲
+* `<leader>7`: 上一曲
+
 :bug:补全的资料
 
 ![image](https://pic1.zhimg.com/80/v2-c4091188211694144634a8f11e3799b8_720w.jpg)

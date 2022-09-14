@@ -137,7 +137,7 @@ let g:floaterm_keymap_new    = '<F7>'
 let g:floaterm_keymap_prev   = '<F8>'
 let g:floaterm_keymap_next   = '<F9>'
 let g:floaterm_keymap_kill   = '<F10>'
-" F11 过几天用Python实现一个音乐播放器的插件
+" F11 暂不设置
 let g:floaterm_keymap_toggle = '<F12>'
 
 
