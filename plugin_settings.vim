@@ -5,7 +5,6 @@
     "set foldmethod=expr
     "    \ foldexpr=lsp#ui#vim#folding#foldexpr()
     "    \ foldtext=lsp#ui#vim#folding#foldtext()
-
     " 1. 调试信息
     let g:lsp_log_verbose = 1
     let g:lsp_log_file = expand('$HOME/vim-lsp.log')
