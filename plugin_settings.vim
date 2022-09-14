@@ -1,10 +1,10 @@
 " vim-lsp: 1, vim-lsp-settings: 2, [asyncomplete, asyncomplete-lsp]: 3
 "
-    " 1. 折叠
-    let g:lsp_fold_enabled = 1 
-    set foldmethod=expr
-        \ foldexpr=lsp#ui#vim#folding#foldexpr()
-        \ foldtext=lsp#ui#vim#folding#foldtext()
+    " 1. 折叠太卡了
+    "let g:lsp_fold_enabled = 0
+    "set foldmethod=expr
+    "    \ foldexpr=lsp#ui#vim#folding#foldexpr()
+    "    \ foldtext=lsp#ui#vim#folding#foldtext()
 
     " 1. 调试信息
     let g:lsp_log_verbose = 1
@@ -23,6 +23,7 @@
 "
 "
 
+
 " vim-lsp-ultisnips: 1
 "
     " 1.代码片段补全
@@ -31,3 +32,5 @@
     let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
     set completeopt+=menuone
+"
+"
