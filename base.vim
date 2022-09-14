@@ -37,14 +37,8 @@ set noerrorbells
 set visualbell
 set autoread
 set wildmenu
+set spell
 filetype on
-
-
-"
-"                               代码折叠配置
-"
-autocmd BufNewFile,BufRead *.py setlocal foldmethod=indent foldlevel=1
-autocmd BufNewFile,BufRead *.rs setlocal foldmethod=syntax foldlevel=1
 
 
 
@@ -65,6 +59,7 @@ Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 " Async autocompletion for Vim 8 and Neovim with |timers|.
 Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
 call plug#end()
 
@@ -95,6 +90,7 @@ let g:floaterm_height = 0.3
 let g:floaterm_width = 0.99
 let g:floaterm_position = 'bottom'
 let g:floaterm_title = 'love($1/$2)'
+hi SpellBad ctermfg=015 ctermbg=000 cterm=none guifg=#FFFFFF guibg=#000000 gui=none
 
 
 
@@ -118,11 +114,7 @@ function! Run()
 endfunction
 
 function! ConfigFile()
-    if has('nvim')
-        find ~/.config/nvim/init.vim
-    else
-        edit ~/.vimrc
-    endif
+    edit $HOME/.vim_runtime/__init__.vim
 endfunction
 
 
