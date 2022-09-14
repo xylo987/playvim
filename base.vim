@@ -37,7 +37,7 @@ set noerrorbells
 set visualbell
 set autoread
 set wildmenu
-set spell
+"set spell
 filetype on
 
 
@@ -60,6 +60,14 @@ Plug 'mattn/vim-lsp-settings'
 " Async autocompletion for Vim 8 and Neovim with |timers|.
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
+
+Plug 'SirVer/ultisnips'
+Plug 'prabirshrestha/async.vim'
+Plug 'thomasfaingnaert/vim-lsp-snippets'
+Plug 'thomasfaingnaert/vim-lsp-ultisnips'
+
+" yourself ultisnips
+Plug 'syz-lm/vim-snippets'
 
 call plug#end()
 

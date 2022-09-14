@@ -23,4 +23,11 @@
 "
 "
 
+" vim-lsp-ultisnips: 1
+"
+    " 1.代码片段补全
+    let g:UltiSnipsExpandTrigger="<tab>"
+    let g:UltiSnipsJumpForwardTrigger="<c-b>"
+    let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
+    set completeopt+=menuone
