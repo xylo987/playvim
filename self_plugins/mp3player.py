@@ -239,6 +239,8 @@ class Mp3Player(MP3PlayerInterface):
         if audio_interface not in self._play_list and \
                 isinstance(audio_interface, (TypeOneAudioInterface, )):
             self._play_list.append(audio_interface)
+            if self._playing_count is None:
+                self._playing_count = 0
 
     def next(self):
         self.stop()
