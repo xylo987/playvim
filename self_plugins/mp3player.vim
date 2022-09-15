@@ -53,7 +53,7 @@ vim.command('messages clear')
 c = Mp3Client()
 cmd = vim.eval(('input("请输入命令以控制音乐盒子'
                 '[start,stop,next,prev,pause,unpause'
-                ',quit,list,play_index](输入exit退出交互)：")'))
+                ',quit,list,play_index]:")'))
 vim.command('echo "\n"')
 c.send(cmd)
 
