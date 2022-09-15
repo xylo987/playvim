@@ -38,6 +38,8 @@ class Mp3Server(object):
         err = False
         try:
             cmd = c.recv(1024).decode()
+            if len(cmd) == 0:
+                return
             if cmd == 'start':
                 self._m.start()
             elif cmd == 'stop':

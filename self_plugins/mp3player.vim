@@ -13,10 +13,17 @@ sys.path.append(pypath)
 
 from threading import Thread
 from mp3player_server import Mp3Server
+import socket
 
-s = Mp3Server()
-t = Thread(target=s.main, daemon=True)
-t.start()
+s = socket.socket()
+try:
+    s.connect(('localhost', 12345))
+    print('音乐盒子已启动')
+    s.close()
+except:
+    s = Mp3Server()
+    t = Thread(target=s.main, daemon=True)
+    t.start()
 
 EOF
 
