@@ -41,8 +41,7 @@ set wildmenu
 set expandtab
 filetype on
 set helplang=cn
-
-
+set autochdir
 
 "
 "                               插件列表
@@ -126,7 +125,11 @@ function! Run()
 endfunction
 
 function! ConfigFile()
-    edit $HOME/.vim_runtime/__init__.vim
+    find $HOME/.vim_runtime/README.md
+endfunction
+
+function! SnippetsFile()
+    find $HOME/.vim/plugged/vim-snippets/README.md
 endfunction
 
 
@@ -134,7 +137,7 @@ let g:mapleader = ","
 nmap <F1> :call ConfigFile()<cr>
 nmap <F2> :NERDTreeToggle<cr>
 nmap <F3> :TagbarToggle<cr>
-" F4 预览命令等待好的插件出现
+nmap <F4> :call SnippetsFile()<cr>
 nmap <F5> :call Run()<cr>
 " F6 调试命令等待好的插件出现
 let g:floaterm_keymap_new    = '<F7>'
@@ -143,7 +146,7 @@ let g:floaterm_keymap_next   = '<F9>'
 let g:floaterm_keymap_kill   = '<F10>'
 " F11 暂不设置
 let g:floaterm_keymap_toggle = '<F12>'
-
+nmap <leader>r :NERDTreeFind<cr>
 
 
 "

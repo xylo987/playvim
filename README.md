@@ -21,10 +21,10 @@ vim +PlugInstall
 
 ![image](https://user-images.githubusercontent.com/111848062/189804977-3cf0bdd1-0a15-4ff9-bc6e-22754fe118b7.png)
 
-* `<F1>`: 打开配置
+* `<F1>`: 进入配置目录
 * `<F2>`: 文件树
 * `<F3>`: 函数树
-* `<F4>`: 预览【还没功能】
+* `<F4>`: 进入snippets目录
 * `<F5>`: 运行【仅仅支持Python, Rust】
 * `<F6>`: 调试【还没功能】
 * `<F7>`: 新命令行
@@ -35,6 +35,7 @@ vim +PlugInstall
 * `<F12>`: 隐藏终端
 * `<C-]>`: 代码补全【vim自动补全看后面的信息图片】
 * `<Tab>`: 代码片段补全【需要学snippets的写法】
+* `<leder>r`: 以buffer目录打开nerdtree
 
 :bug:我的私人音乐盒子
 
