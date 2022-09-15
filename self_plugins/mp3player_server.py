@@ -12,10 +12,11 @@ class Mp3Server(object):
         for file in os.listdir(path):
             if file.endswith('.mp3'):
                 try:
-                    adp = TypeOneMp3AudioAdapter(os.path.sep.join([path, file]), 
-                            file.rsplit('.')[0])
+                    fp = os.path.sep.join([path, file])
+                    fn = file.rsplit('.')[0]
+                    adp = TypeOneMp3AudioAdapter(fp, fn)
                     m.append_play_list(adp)
-                except Exception as e:
+                except Exception:
                     pass
         self._m = m
 
@@ -30,12 +31,13 @@ class Mp3Server(object):
 
         while True:
             if not getattr(s, '_closed'):
-                c,addr = s.accept()
+                c, addr = s.accept()
                 if self.handle(c):
                     s.close()
 
     def handle(self, c):
-        err = False
+        quit = False
+        sended = False
         try:
             cmd = c.recv(1024).decode()
             if len(cmd) == 0:
@@ -54,18 +56,48 @@ class Mp3Server(object):
                 self._m.prev()
             elif cmd == 'quit':
                 self._m.quit()
-                err = True
+                quit = True
+            elif cmd == 'list':
+                music_list = self._m.get_music_list()
+                msg = ''
+                for mu in music_list:
+                    msg = msg + ('\n    %d. %s\n' % (mu[0] + 1, mu[1]))
+                c.send(msg.encode())
+                sended = True
+            elif cmd.startswith('play_index'):
+                try:
+                    index = int(int(cmd[11:]))
+                    if 0 < index <= self._m.get_len_musics():
+                        self._m.play_index(index - 1)
+                    else:
+                        c.send('\n    请输入正确的音乐的索引'.encode())
+                except Exception:
+                    c.send('\n    请输入正确的音乐的索引'.encode())
             else:
-                print(('命令不支持,可支持的命令为:'
-                       '[start,stop,pause,unpause,next,prev,quit]'))
-        except Exception as e:
-            print(e)
+                c.send(('\n    命令不支持,可支持的命令为:'
+                        '[start,stop,pause,unpause,next'
+                        ',prev,quit,list,quit, play_index]').encode())
+        except Exception:
+            import traceback
+            print(traceback.format_exc())
         finally:
+            if not sended:
+                map_status = {
+                    'playing': '正在播放',
+                    'pause': '已经暂停',
+                    'stop': '已经停止',
+                }
+                title = self._m.get_title()
+                pos = self._m.get_pos() or 0
+                status = self._m.get_status()
+                smsg = '\n    %s--%s--%s' % (
+                        map_status[status], title, str(pos / 1000))
+                c.send(smsg.encode())
             try:
                 c.close()
             except Exception as e:
                 print(e)
-            return err
+            return quit
 
 
 if __name__ == '__main__':

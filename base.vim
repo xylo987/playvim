@@ -40,6 +40,7 @@ set wildmenu
 "set spell
 set expandtab
 filetype on
+set helplang=cn
 
 
 
@@ -69,6 +70,8 @@ Plug 'thomasfaingnaert/vim-lsp-ultisnips'
 
 " yourself ultisnips
 Plug 'syz-lm/vim-snippets'
+
+Plug 'mhinz/vim-grepper', { 'on': ['Grepper', '<plug>(GrepperOperator)'] }
 
 call plug#end()
 

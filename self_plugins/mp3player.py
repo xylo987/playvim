@@ -31,14 +31,22 @@ mp3播放器的业务逻辑程序
 """
 
 
-from abc import abstractmethod, ABCMeta
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = 'yes'
+from abc import abstractmethod, ABCMeta
 from pygame.mixer import music
 from pygame import init, quit
 
 
 class MP3PlayerInterface(metaclass=ABCMeta):
+    @abstractmethod
+    def play_index(self, i):
+        raise NotImplementedError()
+
+    @abstractmethod
+    def get_music_list(self):
+        raise NotImplementedError()
+
     @abstractmethod
     def start(self):
         raise NotImplementedError()
@@ -182,11 +190,22 @@ class Mp3Player(MP3PlayerInterface):
         # playing, pause, stop, quit
         self._status = 'stop'
 
-    def get_status(self): 
+    def get_music_list(self):
+        music_list = []
+        for i in range(len(self._play_list)):
+            music_list.append([i, self._play_list[i].get_title()])
+        return music_list
+
+    def play_index(self, i):
+        if 0 <= i < len(self._play_list):
+            self.stop()
+            self.play(self._play_list[i])
+
+    def get_status(self):
         return self._status
 
     def open(self):
-        init() 
+        init()
 
     def quit(self):
         self.stop()
@@ -206,6 +225,8 @@ class Mp3Player(MP3PlayerInterface):
 
             if self._playing_count is None:
                 self._playing_count = 0
+            else:
+                self._playing_count = self._play_list.index(audio_interface)
 
             self._status = 'playing'
             audio_interface.play_typeone()
@@ -255,7 +276,6 @@ class Mp3Player(MP3PlayerInterface):
     def start(self):
         l = self.get_len_musics()
         if l > 0:
-            self._playing_count = l - 1
             audio_interface = self._play_list[self._playing_count]
             self.play(audio_interface)
 
@@ -314,7 +334,6 @@ def loop():
         time.sleep(5)
 
 
-
 def main():
     #  仅仅在主进程中可用
     import signal
@@ -342,8 +361,8 @@ def main():
                 pass
 
     m.start()
-    print('\n|万万音乐> [%s] --- %s ---%d(s)|' % ( 
-            m.get_status(), 
+    print('\n|万万音乐> [%s] --- %s ---%d(s)|' % (
+            m.get_status(),
             m.get_title() or '',
             (m.get_pos() or 0) / 1000))
     while m.get_status() not in ['quit']:

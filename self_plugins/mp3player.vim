@@ -49,13 +49,13 @@ sys.path.append(pypath)
 from threading import Thread
 from mp3player_client import Mp3Client
 
+vim.command('messages clear')
 c = Mp3Client()
 cmd = vim.eval(('input("请输入命令以控制音乐盒子'
-                '[start,stop,next,prev,pause,unpause,quit]：")'))
-if cmd not in ['start','stop','prev','next','pause','unpause','quit']:
-    print('命令不正确')
-else:
-    c.send(cmd)
+                '[start,stop,next,prev,pause,unpause'
+                ',quit,list,play_index](输入exit退出交互)：")'))
+vim.command('echo "\n"')
+c.send(cmd)
 
 EOF
 
