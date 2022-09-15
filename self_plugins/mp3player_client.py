@@ -6,35 +6,40 @@ class Mp3Client(object):
         self._host = 'localhost'
         self._port = 12345
 
-        self._sock = socket.socket()
-        self._sock.connect((self._host, self._port))
-
-    def _send(self, cmd):
         try:
-            print("client:", cmd)
+            self._sock = socket.socket()
+            self._sock.connect((self._host, self._port))
+        except Exception:
+            print('请输入<leader>1启动音乐盒子服务器')
+
+    def send(self, cmd):
+        try:
             self._sock.send(cmd.encode())
         except Exception as e:
             print(e)
         finally:
-            self._sock.close()
+            try:
+                self._sock.close()
+            except Exception as e:
+                print(e)
 
     def send_start(self):
-        self._send('start')
+        self.send('start')
 
     def send_stop(self):
-        self._send('stop')
+        self.send('stop')
 
     def send_pause(self):
-        self._send('pause')
+        self.send('pause')
 
     def send_unpause(self):
-        self._send('unpause')
+        self.send('unpause')
 
     def send_next(self):
-        self._send('next')
+        self.send('next')
 
     def send_prev(self):
-        self._send('prev')
+        self.send('prev')
 
 
 if __name__ == '__main__':

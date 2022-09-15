@@ -21,6 +21,7 @@ class Mp3Server(object):
 
     def main(self):
         s = socket.socket()
+        self._sock = s
         host = socket.gethostname()
         port = 12345
         s.bind((host, port))
@@ -28,13 +29,15 @@ class Mp3Server(object):
         s.listen(5)
 
         while True:
-            c,addr = s.accept()
-            self.handle(c)
+            if not getattr(s, '_closed'):
+                c,addr = s.accept()
+                if self.handle(c):
+                    s.close()
 
     def handle(self, c):
+        err = False
         try:
             cmd = c.recv(1024).decode()
-            print("server:", cmd)
             if cmd == 'start':
                 self._m.start()
             elif cmd == 'stop':
@@ -47,12 +50,20 @@ class Mp3Server(object):
                 self._m.next()
             elif cmd == 'prev':
                 self._m.prev()
+            elif cmd == 'quit':
+                self._m.quit()
+                err = True
             else:
-                print('命令不支持')
+                print(('命令不支持,可支持的命令为:'
+                       '[start,stop,pause,unpause,next,prev,quit]'))
         except Exception as e:
             print(e)
         finally:
-            c.close()
+            try:
+                c.close()
+            except Exception as e:
+                print(e)
+            return err
 
 
 if __name__ == '__main__':

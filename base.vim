@@ -38,6 +38,7 @@ set visualbell
 set autoread
 set wildmenu
 "set spell
+set expandtab
 filetype on
 
 
