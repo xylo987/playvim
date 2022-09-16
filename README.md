@@ -39,6 +39,8 @@ vim +PlugInstall
 
 :bug:我的私人音乐盒子
 
+![image](https://user-images.githubusercontent.com/111848062/190531667-2fca3bb8-dedc-4f04-a119-3d0ae10bba12.png)
+
 * `<leader>1`: 启动音乐盒子服务器
 * `<leader>2`: 命令行输入命令控制音乐盒子
 * `<leader>3`: 启动音乐盒子后台管理服务
