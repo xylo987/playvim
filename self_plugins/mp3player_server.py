@@ -91,7 +91,7 @@ class Mp3Server(object):
             return self._fiy(sended, quit, c)
 
     def _fiy(self, sended, quit, c):
-        if not sended:
+        if not sended and not quit:
             map_status = {
                 'playing': '正在播放',
                 'pause': '已经暂停',
