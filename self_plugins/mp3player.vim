@@ -12,7 +12,19 @@ pypath = os.path.sep.join([vim.eval("expand('$HOME')"), ".vim_runtime",
 sys.path.append(pypath)
 
 from threading import Thread
-from mp3player_server import Mp3Server
+try:
+    from mp3player_server import Mp3Server
+except:
+    pyhome = vim.eval('expand(pythonthreehome)')   
+    pip_bin = os.path.sep.join([pyhome, 'bin', 'python3'])
+    trust = ('-i https://pypi.doubanio.com/simple/'
+             ' --trusted-host pypi.doubanio.com')
+    mds = 'pygame tornado'
+    vim.command('!%s -m pip install %s %s' % (
+                pip_bin, mds, trust))
+    print('出现错误，请重启vim再加载配置触发安装依赖程序')
+    print('安装成功，也请重启使之生效')
+
 import socket
 
 s = socket.socket()
@@ -44,7 +56,20 @@ pypath = os.path.sep.join([vim.eval("expand('$HOME')"), ".vim_runtime",
 sys.path.append(pypath)
 
 from threading import Thread
-from mp3player_web import main
+try:
+    from mp3player_web import main
+except:
+    pyhome = vim.eval('expand(pythonthreehome)')   
+    pip_bin = os.path.sep.join([pyhome, 'bin', 'python3'])
+    trust = ('-i https://pypi.doubanio.com/simple/'
+             ' --trusted-host pypi.doubanio.com')
+    mds = 'pygame tornado'
+    vim.command('!%s -m pip install %s %s' % (
+                pip_bin, mds, trust))
+    print('出现错误，请重启vim再加载配置触发安装依赖程序')
+    print('安装成功，也请重启使之生效')
+
+
 import socket
 from webbrowser import open
 

@@ -47,6 +47,11 @@ vim +PlugInstall
 
 ![image](https://user-images.githubusercontent.com/111848062/190531503-ad9ee5e4-c85b-45da-8222-f0d65b00af47.png)
 
+:bug:写这个用到的知识点[适配器设计模式，html,css,js，tornado，socket编程，vim
+python接口插件，pygame音乐模块]
+
+:bug:
+
 :joy:
 
 :bug:补全的资料
