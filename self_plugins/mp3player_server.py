@@ -5,8 +5,12 @@ from mp3player import Mp3Player, TypeOneMp3AudioAdapter
 
 class Mp3Server(object):
     def __init__(self):
+        self._load()
+
+    def _load(self):
         m = Mp3Player()
         m.open()
+
         path = os.path.sep.join([os.path.dirname(__file__), 'mp3s'])
 
         for file in os.listdir(path):
@@ -42,7 +46,10 @@ class Mp3Server(object):
             cmd = c.recv(1024).decode()
             if len(cmd) == 0:
                 return
-            if cmd == 'start':
+            if cmd == 'updated':
+                self._m.quit()
+                self._load()
+            elif cmd == 'start':
                 self._m.start()
             elif cmd == 'stop':
                 self._m.stop()
@@ -81,23 +88,26 @@ class Mp3Server(object):
             import traceback
             print(traceback.format_exc())
         finally:
-            if not sended:
-                map_status = {
-                    'playing': '正在播放',
-                    'pause': '已经暂停',
-                    'stop': '已经停止',
-                }
-                title = self._m.get_title()
-                pos = self._m.get_pos() or 0
-                status = self._m.get_status()
-                smsg = '\n    %s--%s--%s' % (
-                        map_status[status], title, str(pos / 1000))
-                c.send(smsg.encode())
-            try:
-                c.close()
-            except Exception as e:
-                print(e)
-            return quit
+            return self._fiy(sended, quit, c)
+
+    def _fiy(self, sended, quit, c):
+        if not sended:
+            map_status = {
+                'playing': '正在播放',
+                'pause': '已经暂停',
+                'stop': '已经停止',
+            }
+            title = self._m.get_title()
+            pos = self._m.get_pos() or 0
+            status = self._m.get_status()
+            smsg = '\n    %s--%s--%s' % (
+                    map_status[status], title, str(pos / 1000))
+            c.send(smsg.encode())
+        try:
+            c.close()
+        except Exception as e:
+            print(e)
+        return quit
 
 
 if __name__ == '__main__':

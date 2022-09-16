@@ -31,7 +31,8 @@ class Mp3Client(object):
                 print('我：\n    %s' %  map_cmd['play_index'] + ' ' + cmd[11:])
             self._sock.send(cmd.encode())
             msg = self._sock.recv(1024)
-            print('音乐盒子: %s\n' %  msg.decode())
+            if len(msg) != 0:
+                print('音乐盒子: %s\n' %  msg.decode())
         except Exception as e:
             print(e)
         finally:

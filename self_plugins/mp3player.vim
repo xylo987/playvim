@@ -18,7 +18,7 @@ import socket
 s = socket.socket()
 try:
     s.connect(('localhost', 12345))
-    print('音乐盒子已启动')
+    print('天天音乐已启动')
     s.close()
 except:
     s = Mp3Server()
@@ -29,8 +29,41 @@ EOF
 
 endfunction
 
+function! Self_mp3server_web()
+
+python3 << EOF
+
+import sys
+import os
+import vim
+import asyncio
+
+pypath = os.path.sep.join([vim.eval("expand('$HOME')"), ".vim_runtime",
+            "self_plugins"])
+
+sys.path.append(pypath)
+
+from threading import Thread
+from mp3player_web import main
+import socket
+from webbrowser import open
+
+s = socket.socket()
+try:
+    s.connect(('localhost', 12346))
+    print('天天音乐后台启动')
+    s.close()
+except:
+    w = Thread(target=asyncio.run, args=(main(),), daemon=True)
+    w.start()
+    open('http://localhost:12346')
+
+EOF
+
+endfunction
 
 nmap <leader>1 :call Self_mp3server_start()<cr>
+nmap <leader>3 :call Self_mp3server_web()<cr>
 
 
 function! Self_mp3client_send()

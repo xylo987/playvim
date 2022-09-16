@@ -41,6 +41,7 @@ vim +PlugInstall
 
 * `<leader>1`: 启动音乐盒子服务器
 * `<leader>2`: 命令行输入命令控制音乐盒子
+* `<leader>3`: 启动音乐盒子后台管理服务
 
 :bug:补全的资料
 

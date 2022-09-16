@@ -1,0 +1,28 @@
+<meta charset='utf-8'>
+<title>天天音乐</title>
+<link rel="stylesheet" type="text/css" href="{{ static_url("index.css") }}">
+
+<html>
+<body>
+<div id='root'>
+    <div id='opui'>
+        <div class="au">
+            天天音乐后台管理
+        </div>
+        <div class="op">
+            <div>
+                <input type='file' name='fs' class='upload'
+                    accept="audio/mp3" multiple/>
+                <button id='upload'>上传</button>
+            </div>
+        </div>
+    </div>
+    <audio controls='controls'></audio>
+    <div id='pl'>
+        <table border="1">
+        </table>
+    </div>
+</div>
+<script src='{{ static_url('index.js') }}'></script>
+</body>
+</html>
