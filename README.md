@@ -43,6 +43,10 @@ vim +PlugInstall
 * `<leader>2`: 命令行输入命令控制音乐盒子
 * `<leader>3`: 启动音乐盒子后台管理服务
 
+![image](https://user-images.githubusercontent.com/111848062/190531503-ad9ee5e4-c85b-45da-8222-f0d65b00af47.png)
+
+:joy:
+
 :bug:补全的资料
 
 ![image](https://pic1.zhimg.com/80/v2-c4091188211694144634a8f11e3799b8_720w.jpg)
