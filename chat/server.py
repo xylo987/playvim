@@ -2,9 +2,28 @@ import socket
 import struct
 import json
 from threading import Thread, Lock
+from abc import ABCMeta, abstractmethod
 
 
-class StatusMemory(object):
+class StatusMemoryInterface(metaclass=ABCMeta):
+    @abstractmethod
+    def set(self, name, conn):
+        raise NotImplementedError()
+
+    @abstractmethod
+    def get(self, name):
+        raise NotImplementedError()
+
+    @abstractmethod
+    def remove(self, name):
+        raise NotImplementedError()
+
+    @abstractmethod
+    def all(self):
+        raise NotImplementedError()
+
+
+class LocalStatusMemory(StatusMemoryInterface):
     def __init__(self):
         self._cm = dict()
         self._lock = Lock()
@@ -25,6 +44,14 @@ class StatusMemory(object):
 
     def all(self):
         return self._cm
+
+
+class StatusMemoryFactory(object):
+    def get_status_memory(self, status_memory):
+        if status_memory == 'LocalStatusMemory':
+            return LocalStatusMemory()
+        else:
+            return None
 
 
 class Handle(object):
@@ -134,9 +161,9 @@ class Handle(object):
 
 
 class Server(object):
-    def __init__(self, port):
+    def __init__(self, port, status_memory):
         self._port = port
-        self._status_memory = StatusMemory()
+        self._status_memory = status_memory
 
     def start(self):
         s = socket.socket()
@@ -167,7 +194,9 @@ class Server(object):
 
 if __name__ == '__main__':
     try:
-        s = Server(23456)
+        sf = StatusMemoryFactory()
+        sm = sf.get_status_memory('LocalStatusMemory')
+        s = Server(23456, sm)
         s.start()
     finally:
         s.close()
