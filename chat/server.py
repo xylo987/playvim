@@ -1,4 +1,5 @@
 import socket
+import struct
 import json
 from threading import Thread, Lock
 
@@ -27,74 +28,106 @@ class StatusMemory(object):
 
 
 class Handle(object):
+    """
+    提供转发，登陆，退出命令
+    """
     def __init__(self, connect, status_memory):
-        self._connect = connect
+        self._sock = connect
         self._status_memory = status_memory
 
-    def _login(self):
-        """
-        握手，建立连接
-        """
+    def handle(self):
         try:
-            while getattr(self._connect, '_closed'):
+            while not getattr(self._sock, '_closed'):
+                recv_header = self._sock.recv(4)
+                if len(recv_header) == 0:
+                    break
+                data_size, = struct.unpack('!i', recv_header)
                 packet = b''
-                while 1 < 2:
-                    d = self._connect.read(1024)
+                while len(packet) < data_size:
+                    d = self._sock.recv(1024)
                     if len(d) > 0:
                         packet = packet + d
-
-                packet_json = json.loads(packet.decode())
-                name = packet_json['name']
-
-                if self._status_memory.get(name):
-                    self._connect.write(json.dumps({
-                        'status': 404,
-                        'msg': '该名字已经登陆'
-                    }))
-                    return None
-                else:
-                    self._connect.write(json.dumps({
-                        'status': 200,
-                        'msg': '登陆成功'
-                    }))
-                    self._status_memory.set(name, self._connect)
-                    return name
-        except Exception:
-            self._close()
-            return None
-
-    def forward(self):
-        """
-        转发消息之前，需要先登陆，否则就直接退出
-        转发消息，消息的数据结构
-        {
-            'form': '小红',
-            'to': '小黑',
-            'msg': '你好',
-            'sj': '2020-09-17 21:17:20'
-        }
-        """
-        name = self._login()
-        if name:
-            try:
-                while getattr(self._connect, '_closed'):
-                    packet = b''
-                    while 1 < 2:
-                        d = self._connect.read(1024)
-                        if len(d) > 0:
-                            packet = packet + d
+                    else:
                         break
+                try:
                     packet_json = json.loads(packet.decode())
-                    packet_json['from'] = self._name
-                    to = packet_json['to']
-                    remote_conn = self._status_memory.get(to)
-                    remote_conn.write(packet)
-            except Exception:
-                self.close()
+                    self._deal(packet_json, packet)
+                except Exception:
+                    self._error()
+        except Exception:
+            import traceback
+            print(traceback.format_exc())
+        finally:
+            self._close()
+
+    def _error(self):
+        jd = json.dumps({
+            'status': 500,
+            'msg': '数据格式错误'
+        }).encode()
+        send_header = struct.pack('!i', len(jd))
+        self._sock.send(send_header + jd)
+
+    def _deal(self, packet_json, packet):
+        try:
+            cmd = packet_json['action']
+            if cmd == 'login':
+                self._login(packet_json)
+            elif cmd == 'forward':
+                self._forward(packet_json, packet)
+            elif cmd == 'quit':
+                self._quit()
+            else:
+                self._error()
+        except Exception:
+            self._error()
+
+    def _quit(self):
+        self._close()
+
+    def _login(self, packet_json):
+        name = packet_json['name']
+        if self._status_memory.get(name):
+            jd = json.dumps({
+                'status': 404,
+                'msg': '该名字已经登陆'
+            }).encode()
+            send_header = struct.pack('!i', jd)
+            self._sock.send(send_header + jd)
+            self._close()
+        else:
+            self._name = name
+            self._status_memory.set(name, self._sock)
+            jd = json.dumps({
+                'status': 200,
+                'msg': '登陆成功，您现在就是%s了' % name
+            }).encode()
+            send_header = struct.pack('!i', len(jd))
+            self._sock.send(send_header + jd)
+
+    def _forward(self, packet_json, packet):
+        to = packet_json['to']
+        remote_conn = self._status_memory.get(to)
+        if remote_conn:
+            send_header = struct.pack('!i', len(packet))
+            remote_conn.send(send_header + packet)
+        else:
+            jd = json.dumps({
+                'status': 404,
+                'msg': '目标用户不在线'
+            }).encode()
+            send_header = struct.pack('!i', len(jd))
+            self._sock.send(send_header + jd)
+
+    def _close_for_login(self):
+        try:
+            self._sock.close()
+        except Exception as e:
+            print(e)
 
     def _close(self):
         try:
-            self._connect.close()
+            self._sock.close()
             self._status_memory.remove(self._name)
         except Exception as e:
             print(e)
@@ -108,18 +141,20 @@ class Server(object):
     def start(self):
         s = socket.socket()
         self._sock = s
-        host = socket.gethostname()
-        port = 12345
-        s.bind((host, port))
+        s.bind(('0.0.0.0', self._port))
 
         s.listen(5)
 
-        while True:
-            if not getattr(s, '_closed'):
+        while not getattr(s, '_closed'):
+            try:
                 c, addr = s.accept()
                 handle = Handle(c, self._status_memory)
-                t = Thread(target=handle.forward)
+                t = Thread(target=handle.handle)
                 t.start()
+            except Exception as e:
+                print(e)
+
+        self.close()
 
     def close(self):
         for name, conn in self._status_memory.all():
@@ -128,3 +163,11 @@ class Server(object):
                 self._status_memory.remove(name)
             except Exception:
                 pass
+
+
+if __name__ == '__main__':
+    try:
+        s = Server(23456)
+        s.start()
+    finally:
+        s.close()

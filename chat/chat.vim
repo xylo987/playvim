@@ -7,14 +7,27 @@ import os
 import vim
 
 pypath = os.path.sep.join([vim.eval("expand('$HOME')"), ".vim_runtime",
-            "mp3player"])
+            "chat"])
 
 sys.path.append(pypath)
 from server import Server
 from threading import Thread
+import socket
 
-s = Server(23456)
-Thread(target=s.start, daemon=True).start()
+s = None
+port = 23456
+try:
+    s = socket.socket()
+    s.connect(('localhost', 23456))
+except Exception as e:
+    s = Server(port)
+    Thread(target=s.start, daemon=True).start()
+finally:
+    print('聊天服务器已启动')
+    try:
+        s.close()
+    except Exception as e:
+        print(e)
 
 EOF
 
