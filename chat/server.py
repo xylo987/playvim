@@ -94,7 +94,7 @@ class Handle(object):
             }).encode()
             send_header = struct.pack('!i', jd)
             self._sock.send(send_header + jd)
-            self._close()
+            self._close_for_login()
         else:
             self._name = name
             self._status_memory.set(name, self._sock)
