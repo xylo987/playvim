@@ -83,19 +83,17 @@ class ReNameHandler(tornado.web.RequestHandler):
 
 class PlayHandler(tornado.web.RequestHandler):
     def get(self):
-        # 设置这两个响应头可以使音乐和视频可以被拖放
-        # accept-ranges和 content-length
-        self.set_header('Accept-Ranges', 'bytes')
         try:
             index = int(self.get_argument('index'))
-            self.set_header('Content-Type', 'audio/mp3')
             _, _, fp = BaseHandler.load_all_mp3()[index]
+            self.set_header('Content-Type', 'audio/mp3')
+            self.set_header('Accept-Ranges', 'bytes')
             with open(fp, 'rb') as f:
                 while 1:
                     d = f.read(2048)
                     if not d:
                         break
-                    self.set_header('content-length', len(d))
+                    #self.set_header('content-length', len(d)))
                     self.write(d)
         except Exception:
             import traceback
