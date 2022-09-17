@@ -1,0 +1,107 @@
+html {
+    background: gray;
+}
+
+audio {
+    width: 100%;
+    border-radius: 0;
+    height: 30px;
+    background: white;
+    margin-bottom: 10px;
+}
+
+#root {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 488px;
+    display: flex;
+    flex-flow: column;
+    transform: translate(-50%, -50%);
+}
+
+#opui {
+    width: 488px;
+    margin: 0 auto;
+    display: flex;
+    background: white;
+    color: gray;
+    border: solid 0.5px gray;
+    margin-bottom:  10px;
+}
+
+input[type='file'] {
+    width: 150px;
+}
+
+#opui > .au {
+    flex-grow: 1;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: black;
+}
+
+#opui > .op {
+    flex-grow: 0;
+}
+
+#opui > .op > div {
+    position: relative;
+    top: 50%;
+    transform:translateY(-50%);
+    padding-right: 10px;
+}
+
+button {
+    border: solid gray 0.5px;
+}
+
+#pl {
+    width: 488px;
+    text-align: center;
+    background: white;
+    height: 100%;
+    border: solid 0.5px gray;
+    border-top: none;
+}
+
+#pl > table {
+    background: white;
+    list-style: none;
+    padding: 0 0 0 0;
+    color: gray;
+    font-size: 9px;
+    overflow-y: scroll;
+    width: 488px;
+}
+
+th {
+    color: black;
+}
+td {
+    text-align: center;
+}
+
+.left {
+    width: 390px;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
+    display: block;
+}
+
+.right {
+    width: 98px;
+}
+td > .rename {
+    background: white;
+    color: gray;
+    font-size: 9px;
+}
+
+td > .del {
+    background: white;
+    font-size: 9px;
+    color: red;
+}
