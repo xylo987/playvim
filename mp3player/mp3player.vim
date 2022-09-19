@@ -25,17 +25,14 @@ except:
     print('出现错误，请重启vim再加载配置触发安装依赖程序')
     print('安装成功，也请重启使之生效')
 
-import socket
 
-s = socket.socket()
 try:
-    s.connect(('localhost', 12345))
-    print('天天音乐已启动')
-    s.close()
-except:
     s = Mp3Server()
     t = Thread(target=s.main, daemon=True)
     t.start()
+    print('mp3服务器已启动')
+except Exeption as e:
+    print(e)
 
 EOF
 
@@ -107,13 +104,16 @@ sys.path.append(pypath)
 from threading import Thread
 from mp3player_client import Mp3Client
 
-vim.command('messages clear')
-c = Mp3Client()
-cmd = vim.eval(('input("请输入命令以控制音乐盒子'
-                '[start,stop,next,prev,pause,unpause'
-                ',quit,list,play_index]:")'))
-vim.command('echo "\n"')
-c.send(cmd)
+try:
+    vim.command('messages clear')
+    c = Mp3Client()
+    cmd = vim.eval(('input("请输入命令以控制音乐盒子'
+                    '[start,stop,next,prev,pause,unpause'
+                    ',quit,list,play_index]:")'))
+    vim.command('echo "\n"')
+    c.send(cmd)
+except Exception as e:
+    print(e)
 
 EOF
 

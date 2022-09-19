@@ -25,19 +25,22 @@ class Mp3Server(object):
         self._m = m
 
     def main(self):
-        s = socket.socket()
-        self._sock = s
-        host = socket.gethostname()
-        port = 12345
-        s.bind((host, port))
+        try:
+            s = socket.socket()
+            self._sock = s
+            host = 'localhost'
+            port = 54321
+            s.bind((host, port))
 
-        s.listen(5)
+            s.listen(5)
 
-        while True:
-            if not getattr(s, '_closed'):
-                c, addr = s.accept()
-                if self.handle(c):
-                    s.close()
+            while True:
+                if not getattr(s, '_closed'):
+                    c, addr = s.accept()
+                    if self.handle(c):
+                        s.close()
+        except:
+            pass
 
     def handle(self, c):
         quit = False

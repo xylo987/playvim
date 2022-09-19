@@ -4,18 +4,19 @@ import socket
 class Mp3Client(object):
     def __init__(self):
         self._host = 'localhost'
-        self._port = 12345
+        self._port = 54321
 
         try:
             self._sock = socket.socket()
             self._sock.connect((self._host, self._port))
-        except Exception:
+        except Exception as e:
+            print(e)
             print('请输入<leader>1启动音乐盒子服务器')
 
     def send(self, cmd):
-        if len(cmd.strip()) == 0:
-            return
         try:
+            if not cmd:
+                raise Exception('您的命令为空字符串')
             map_cmd = {
                 'start': '开始播放',
                 'stop': '停止播放',
