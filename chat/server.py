@@ -56,7 +56,8 @@ class StatusMemoryFactory(object):
 
 class Handle(object):
     """
-    提供转发，登陆，退出命令
+    提供转发，群发，登陆，退出命令
+    当有新用户或者下线，则通知所有在线用户
     """
     def __init__(self, connect, status_memory):
         self._sock = connect
@@ -70,9 +71,16 @@ class Handle(object):
                     break
                 data_size, = struct.unpack('!i', recv_header)
                 packet = b''
-                while len(packet) < data_size:
-                    d = self._sock.recv(1024)
-                    if len(d) > 0:
+                has_read = 0
+                while has_read < data_size:
+                    d = b''
+                    if data_size - has_read < 1024:
+                        d = self._sock.recv(data_size - has_read)
+                    else:
+                        d = self._sock.recv(1024)
+                    ld = len(d)
+                    if ld > 0:
+                        has_read = has_read + ld
                         packet = packet + d
                     else:
                         break
@@ -81,11 +89,12 @@ class Handle(object):
                     self._deal(packet_json, packet)
                 except Exception:
                     self._error()
-        except Exception:
+        except Exception as e:
             import traceback
             print(traceback.format_exc())
         finally:
             self._close()
+            self._clear_status_memory()
 
     def _error(self):
         jd = json.dumps({
@@ -96,21 +105,50 @@ class Handle(object):
         self._sock.send(send_header + jd)
 
     def _deal(self, packet_json, packet):
-        try:
-            cmd = packet_json['action']
-            if cmd == 'login':
-                self._login(packet_json)
-            elif cmd == 'forward':
-                self._forward(packet_json, packet)
-            elif cmd == 'quit':
-                self._quit()
-            else:
-                self._error()
-        except Exception:
+        cmd = packet_json['action']
+        if cmd == 'login':
+            # {'action': 'login', 'name': xx}
+            self._login(packet_json)
+            self._notify_all()
+        elif cmd == 'qunfa':
+            # {'action': 'qunfa', 'from': xx, 'msg': xx}
+            self._send_all(packet)
+        elif cmd == 'forward':
+            # {'action': 'forward', 'from': xx, 'to': xx, 'msg': xx}
+            self._forward(packet_json, packet)
+        elif cmd == 'quit':
+            # {'action': 'quit', 'name': xx}
+            self._quit()
+            self._notify_all()
+        else:
             self._error()
+
+    def _send_all(self, packet):
+        for conn in list(self._status_memory.all().values()):
+            if conn != self._sock:
+                self._send_one(conn, packet)
+
+    def _send_one(self, conn, packet):
+        send_header = struct.pack('!i', len(packet))
+        conn.send(send_header + packet)
+
+    def _notify_one(self, names, conn):
+        jd = json.dumps({
+            'action': 'notify',
+            'names': names
+        }).encode()
+        send_header = struct.pack('!i', len(jd))
+        conn.send(send_header + jd)
+
+    def _notify_all(self):
+        names = list(self._status_memory.all().keys())
+        conns = list(self._status_memory.all().values())
+        for conn in conns:
+            self._notify_one(names, conn)
 
     def _quit(self):
         self._close()
+        self._clear_status_memory()
 
     def _login(self, packet_json):
         name = packet_json['name']
@@ -133,6 +171,9 @@ class Handle(object):
             self._sock.send(send_header + jd)
 
     def _forward(self, packet_json, packet):
+        """
+        { 'from: xx, 'to': xx, ...}
+        """
         to = packet_json['to']
         remote_conn = self._status_memory.get(to)
         if remote_conn:
@@ -146,32 +187,31 @@ class Handle(object):
             send_header = struct.pack('!i', len(jd))
             self._sock.send(send_header + jd)
 
-    def _close_for_login(self):
-        try:
-            self._sock.close()
-        except Exception as e:
-            print(e)
-
     def _close(self):
         try:
             self._sock.close()
-            self._status_memory.remove(self._name)
         except Exception as e:
             print(e)
 
+    def _clear_status_memory(self):
+        try:
+            self._status_memory.remove(self._name)
+        except Exception:
+            pass
+
 
 class Server(object):
-    def __init__(self, port, status_memory):
+    def __init__(self, host, port, status_memory):
+        self._host = host
         self._port = port
         self._status_memory = status_memory
 
     def start(self):
         s = socket.socket()
         self._sock = s
-        s.bind(('0.0.0.0', self._port))
+        s.bind((self._host, self._port))
 
         s.listen(5)
-
         while not getattr(s, '_closed'):
             try:
                 c, addr = s.accept()
@@ -187,6 +227,9 @@ class Server(object):
         for name, conn in self._status_memory.all():
             try:
                 conn.close()
+            except Exception:
+                pass
+            try:
                 self._status_memory.remove(name)
             except Exception:
                 pass
@@ -196,7 +239,7 @@ if __name__ == '__main__':
     try:
         sf = StatusMemoryFactory()
         sm = sf.get_status_memory('LocalStatusMemory')
-        s = Server(23456, sm)
+        s = Server('localhost', 23456, sm)
         s.start()
     finally:
         s.close()
