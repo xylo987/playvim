@@ -13,6 +13,8 @@ class Mp3Client(object):
             print('请输入<leader>1启动音乐盒子服务器')
 
     def send(self, cmd):
+        if len(cmd.strip()) == 0:
+            return
         try:
             map_cmd = {
                 'start': '开始播放',
