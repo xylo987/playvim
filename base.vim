@@ -3,7 +3,7 @@
 "
 set nocompatible
 set cursorline
-"set cursorcolumn
+set cursorcolumn
 set encoding=utf-8
 set termguicolors
 set nobackup
