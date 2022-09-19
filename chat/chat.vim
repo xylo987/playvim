@@ -57,18 +57,19 @@ pypath = os.path.sep.join([vim.eval("expand('$HOME')"), ".vim_runtime",
 sys.path.append(pypath)
 from ui import App
 from threading import Thread
-import socket
 
-cfg = os.path.sep.join(
-    [vim.eval('expand("$HOME")'), '.vim', '.chat_cfg.json'])
-with open(cfg, 'r') as f:
-    jd = json.load(f)
-    host = jd['host']
-    port = jd['port']
-    name = jd['name']
-    cmd = 'python3 %s/%s' % (pypath, 
-            'ui.py %s %s %s' % (host, port, name))
-    Thread(target=os.system, args=(cmd,), daemon=True).start()
+try:
+    cfg = os.path.sep.join(
+        [vim.eval('expand("$HOME")'), '.vim', '.chat_cfg.json'])
+    with open(cfg, 'r') as f:
+        jd = json.load(f)
+        host = jd['host']
+        port = jd['port']
+        name = jd['name']
+        cmd = 'python3 %s/%s' % (pypath, 
+                'ui.py %s %s %s' % (host, port, name))
+        Thread(target=os.system, args=(cmd,), daemon=True).start()
+except Exception: pass
 
 EOF
 
