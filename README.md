@@ -50,6 +50,17 @@ vim +PlugInstall
 :bug:写这个用到的知识点[适配器设计模式，html,css,js，tornado，socket编程，vim
 python接口插件，pygame音乐模块]
 
+:bug:我的私人聊天工具
+
+![image](https://user-images.githubusercontent.com/111848062/190949651-058800ba-a6e9-4818-9b59-81d5f24dedd0.png)
+
+* `<leader>4`: 配置通讯服务器信息
+* `<leader>5`: 启动服务器，如果服务器在远程，就不用启动，直接启动客户端连接聊天即可
+* `<leader>6`: 启动客户端
+
+:bug:写这个用到的知识点[工厂模式，GUI界面编程tkinter, socket网络编程]
+
+
 :bug:
 
 :joy:
