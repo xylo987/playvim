@@ -4,6 +4,7 @@ import json
 from threading import Thread, Lock
 from abc import ABCMeta, abstractmethod
 
+DEBUG = False
 
 class StatusMemoryInterface(metaclass=ABCMeta):
     @abstractmethod
@@ -90,8 +91,10 @@ class Handle(object):
                 except Exception:
                     self._error()
         except Exception as e:
-            import traceback
-            print(traceback.format_exc())
+            if DEBUG:
+                import traceback
+                print(traceback.format_exc())
+            else: print(e)
         finally:
             self._close()
             self._clear_status_memory()
@@ -207,21 +210,29 @@ class Server(object):
         self._status_memory = status_memory
 
     def start(self):
-        s = socket.socket()
-        self._sock = s
-        s.bind((self._host, self._port))
+        try:
+            s = socket.socket()
+            self._sock = s
+            s.bind((self._host, self._port))
 
-        s.listen(5)
-        while not getattr(s, '_closed'):
-            try:
-                c, addr = s.accept()
-                handle = Handle(c, self._status_memory)
-                t = Thread(target=handle.handle)
-                t.start()
-            except Exception as e:
+            s.listen(5)
+            while not getattr(s, '_closed'):
+                try:
+                    c, addr = s.accept()
+                    handle = Handle(c, self._status_memory)
+                    t = Thread(target=handle.handle)
+                    t.start()
+                except Exception as e:
+                    print(e)
+        except Exception as e:
+            if DEBUG:
+                import traceback
+                print(traceback.format_exc())
+            else:
                 print(e)
-
-        self.close()
+        finally:
+            if getattr(self, 'close'):
+                self.close()
 
     def close(self):
         for name, conn in self._status_memory.all():

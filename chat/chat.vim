@@ -13,14 +13,9 @@ pypath = os.path.sep.join([vim.eval("expand('$HOME')"), ".vim_runtime",
 sys.path.append(pypath)
 from server import Server, StatusMemoryFactory
 from threading import Thread
-import socket
 
 s = None
-port = 23456
 try:
-    s = socket.socket()
-    s.connect(('localhost', 23456))
-except Exception as e:
     cfg = os.path.sep.join(
         [vim.eval('expand("$HOME")'), '.vim', '.chat_cfg.json'])
     with open(cfg, 'r') as f:
@@ -30,17 +25,17 @@ except Exception as e:
         sf = StatusMemoryFactory()
         sm = sf.get_status_memory('LocalStatusMemory')
         s = Server(host, port, sm)
-        Thread(target=s.start).start()
+        t = Thread(target=s.start, daeon=True)
+        t.start()
+except Exception:
+    if s: s.close()
 finally:
     print('聊天服务器已启动')
-    try:
-        s.close()
-    except Exception as e:
-        print(e)
 
 EOF
 
 endfun
+
 
 fun Chat_start()
 
@@ -98,8 +93,8 @@ try:
             'name': name
         }, f)
     print('配置成功')
-except Exception as e:
-    print(e)
+except KeyboardInterrupt:
+    print('用户已取消该操作')
     
 EOF
 
