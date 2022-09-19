@@ -157,6 +157,9 @@ class App(object):
 if __name__ == '__main__':
     import sys
 
-    app = App()
-    if app.login(sys.argv[1], int(sys.argv[2]), sys.argv[3]):
-        app.show()
+    try:
+        app = App()
+        if app.login(sys.argv[1], int(sys.argv[2]), sys.argv[3]):
+            app.show()
+    except Exception:
+        pass

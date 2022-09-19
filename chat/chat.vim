@@ -68,7 +68,7 @@ with open(cfg, 'r') as f:
     name = jd['name']
     cmd = 'python3 %s/%s' % (pypath, 
             'ui.py %s %s %s' % (host, port, name))
-    Thread(target=os.system, args=(cmd,)).start()
+    Thread(target=os.system, args=(cmd,), daemon=True).start()
 
 EOF
 
