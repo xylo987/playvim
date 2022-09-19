@@ -4,6 +4,9 @@ import json
 import traceback
 
 
+DEBUG = False
+
+
 class Client(object):
     def __init__(self, host, port):
         self._host = host
@@ -89,7 +92,8 @@ class Client(object):
                 jd = json.loads(packet)
                 return jd
             except Exception:
-                print(traceback.format_exc(), packet)
+                if DEBUG:
+                    print(traceback.format_exc(), packet)
                 return None
         else:
             raise Exception('您未登陆就想要接收消息显然是错误的')
@@ -108,7 +112,8 @@ class Client(object):
                 self._sock.send(send_header + jd)
                 return True
             except Exception:
-                print(traceback.format_exc())
+                if DEBUG:
+                    print(traceback.format_exc())
                 return False
         else:
             raise Exception('您未登陆就要聊天显然是错误的')
@@ -126,7 +131,8 @@ class Client(object):
                 self._sock.send(send_header + jd)
                 return True
             except Exception:
-                print(traceback.format_exc())
+                if DEBUG:
+                    print(traceback.format_exc())
                 return False
         else:
             raise Exception('您未登陆就要群发显然是错误的')
@@ -142,7 +148,8 @@ class Client(object):
         try:
             self._sock.close()
         except Exception:
-            print(traceback.format_exc())
+            if DEBUG:
+                print(traceback.format_exc())
 
 
 if __name__ == '__main__':
