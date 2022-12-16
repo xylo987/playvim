@@ -2,8 +2,8 @@
 "                               基本配置
 "
 set nocompatible
-set cursorline
-set cursorcolumn
+"set cursorline
+"set cursorcolumn
 set encoding=utf-8
 set termguicolors
 set nobackup

@@ -6,6 +6,7 @@ from abc import ABCMeta, abstractmethod
 
 DEBUG = False
 
+
 class StatusMemoryInterface(metaclass=ABCMeta):
     @abstractmethod
     def set(self, name, conn):
@@ -94,7 +95,8 @@ class Handle(object):
             if DEBUG:
                 import traceback
                 print(traceback.format_exc())
-            else: print(e)
+            else:
+                print(e)
         finally:
             self._close()
             self._clear_status_memory()
