@@ -16,6 +16,9 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 vim +PlugInstall
 ```
+如果是windows用户就到vim-plug官方github网址上找相关powershell的安装脚本，以上
+只对unix系统有效，另外windows系统请安装32位的python36，并设置好环境变量，不然
+也会python36.dll错误。
 
 :bug:一些私人的情趣
 

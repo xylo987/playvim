@@ -42,6 +42,7 @@ set expandtab
 filetype on
 set helplang=cn
 set autochdir
+set nu
 
 "
 "                               插件列表
