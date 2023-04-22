@@ -19,12 +19,6 @@
     inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
     inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
     inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
-
-    " 1. python3
-    let pythonthreehome = expand('$HOME/.local/share/vim-lsp-settings/servers/pylsp-all/venv')
-    let pythonthreedll = expand('$HOME/.local/share/vim-lsp-settings/servers/pylsp-all/venv/lib')
-
-
 "
 "
 

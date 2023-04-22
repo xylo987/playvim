@@ -37,7 +37,7 @@ set noerrorbells
 set visualbell
 set autoread
 set wildmenu
-"set spell
+set spell
 set expandtab
 filetype on
 set helplang=cn
@@ -48,6 +48,7 @@ set nu
 "                               插件列表
 "
 call plug#begin('~/.vim/plugged')
+let g:plug_url_format = 'git@github.com:%s.git'
 
 Plug 'scrooloose/nerdtree'
 Plug 'preservim/tagbar'
@@ -55,6 +56,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'voldikss/vim-floaterm'
 Plug 'Yggdroot/indentLine'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'plan9-for-vimspace/acme-colors'
 Plug 'altercation/vim-colors-solarized'
 " Async Language Server Protocol plugin for vim8 and neovim.
 Plug 'prabirshrestha/vim-lsp'
@@ -69,7 +71,7 @@ Plug 'thomasfaingnaert/vim-lsp-snippets'
 Plug 'thomasfaingnaert/vim-lsp-ultisnips'
 
 " yourself ultisnips
-Plug 'syz-lm/vim-snippets'
+Plug 'xylo987/vim-snippets'
 
 Plug 'mhinz/vim-grepper', { 'on': ['Grepper', '<plug>(GrepperOperator)'] }
 
@@ -79,17 +81,17 @@ call plug#end()
 "
 "                               界面设置
 "
-color murphy
+color shine
 set guioptions-=m  "menu bar
 set guioptions-=T  "toolbar
 set guioptions-=r  "scrollbar
 set guioptions-=L  "scrollbar
 hi pmenu ctermbg=white ctermfg=black guibg=white guifg=black gui=bold
 hi pmenusel ctermbg=gray ctermfg=white guibg=gray guifg=white gui=bold
-hi colorcolumn guibg=yellow
+hi colorcolumn guibg=lightgrey
 hi folded ctermbg=gray ctermfg=black guibg=gray guifg=black gui=bold
-hi cursorline ctermbg=green ctermfg=black guibg=green guifg=black
-hi cursorcolumn ctermbg=green ctermfg=black guibg=green guifg=black
+hi cursorline ctermbg=gray ctermfg=black guibg=gray guifg=black
+hi cursorcolumn ctermbg=gray ctermfg=black guibg=gray guifg=black
 hi Floaterm guibg=white guifg=black ctermbg=white ctermfg=black
 hi FloatermBorder guibg=pink guifg=gray
 set fillchars=vert:\|,fold:\-,eob:\ 
@@ -148,36 +150,5 @@ let g:floaterm_keymap_kill   = '<F10>'
 " F11 暂不设置
 let g:floaterm_keymap_toggle = '<F12>'
 nmap <leader>r :NERDTreeFind<cr>
-
-
-"
-"                                总结
-"
-" 很多插件都不好用，很讨厌哪种，为了安装一个功能却要安装很多插件和另外的可执行
-" 程序的插件，插件就不能做成，比如专门做补全的，专门做跳转代码的，专门做文档的
-" 预览的，也是不知道为什么，现在的插件总是各种问题，抱歉，我没有那个时间去学习
-" VIM插件相关的开发，市面上也没有这类的资料，就没有一款比较全面的介绍。
-"
-" 所以，VIM我就用来当编辑器中的玩具了。
-"
-" RUST语言不知道多坑，乱七八糟的，要我看，还不如C++来的舒服。做业务比不过Java
-" 做小项目速度比不过Python，做系统软件比不过C++/C，老师总是跟我们讲，不要搞世界
-" 上已经存在的行业，况且，C/C++，Java，Python，Javascript目前在业界，基本吃完一
-" 切，现在只不过在夕阳之际，现在要出来分一杯羹，和传统巨头技术去卷罢了。
-"
-" 让我看，做程序员，还是老老实实把这4们编程语言学好，其它的不看也罢，如果图省事
-" 就学个C，Python，Javascript也行。就已经够混饭了，后面就是算法和基础了，基础一
-" 半在C里面，做应用，Python，Javascript都能搞定，未来的时间不多了，学Rust其它就
-" 像在炒作的语言，就像在无脑跟风一样。
-"
-" 当然，有人会说，新技术比老技术好，但是让我们想想，我们现在的信息软件科技，都
-" 是由这些4们语言构建起来，这么多上线的，成功的应用，足以证明我的总结相当到位，
-" 
-" VIM是个好的编辑器，我只能说这么多，古老的编辑器。
-"
-" 未来，如果出现了代码非常精简，功能简单直接的插件，我还是会去研究的，但是，目
-" 前，遇到的还太少。
-"
-" :joy:
-" Good luck!
-"
+" python3的home环境变量
+let &pythonthreehome="/Library/Frameworks/Python.framework/Versions/3.11/"
