@@ -2,8 +2,6 @@
 
 :bug:我用vim就是，没事的时候，玩玩配置娱乐一下，我不会用vim做所有的事。
 
-![image](https://user-images.githubusercontent.com/111848062/190047018-d3ab0df0-9b6e-457d-a908-9ead09102ed1.png)
-
 :joy:
 
 :bug:安装
