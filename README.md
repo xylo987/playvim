@@ -14,9 +14,8 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 vim +PlugInstall
 ```
-如果是windows用户就到vim-plug官方github网址上找相关powershell的安装脚本，以上
-只对unix系统有效，另外windows系统请安装32位的python36，并设置好环境变量，不然
-也会python36.dll错误。
+
+安装完毕之后需要设置`pythonthreehome`的值，具体需要借助搜索引擎。
 
 :bug:一些私人的情趣
 
@@ -48,9 +47,6 @@ vim +PlugInstall
 
 ![image](https://user-images.githubusercontent.com/111848062/190531503-ad9ee5e4-c85b-45da-8222-f0d65b00af47.png)
 
-:bug:写这个用到的知识点[适配器设计模式，html,css,js，tornado，socket编程，vim
-python接口插件，pygame音乐模块]
-
 :bug:我的私人聊天工具
 
 ![image](https://user-images.githubusercontent.com/111848062/190949651-058800ba-a6e9-4818-9b59-81d5f24dedd0.png)
@@ -58,9 +54,6 @@ python接口插件，pygame音乐模块]
 * `<leader>4`: 配置通讯服务器信息
 * `<leader>5`: 启动服务器，如果服务器在远程，就不用启动，直接启动客户端连接聊天即可
 * `<leader>6`: 启动客户端
-
-:bug:写这个用到的知识点[工厂模式，GUI界面编程tkinter, socket网络编程]
-
 
 :bug:
 

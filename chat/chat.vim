@@ -25,9 +25,10 @@ try:
         sf = StatusMemoryFactory()
         sm = sf.get_status_memory('LocalStatusMemory')
         s = Server(host, port, sm)
-        t = Thread(target=s.start, daeon=True)
+        t = Thread(target=s.start, daemon=True)
         t.start()
-except Exception:
+except Exception as e:
+    print(e)
     if s: s.close()
 finally:
     print('聊天服务器已启动')
@@ -64,7 +65,8 @@ try:
         cmd = 'python3 %s/%s' % (pypath, 
                 'ui.py %s %s %s' % (host, port, name))
         Thread(target=os.system, args=(cmd,), daemon=True).start()
-except Exception: pass
+except Exception as e:
+    print(e)
 
 EOF
 
@@ -83,6 +85,10 @@ import vim
 try:
     cfg = os.path.sep.join([
                     vim.eval('expand("$HOME")'), '.vim', '.chat_cfg.json'])
+    if os.path.exists(cfg):
+        with open(cfg, 'r') as f:
+            print(json.load(f))
+
     host = vim.eval('input("请输入服务器地址:")')
     port = int(vim.eval('input("请输入服务器端口:")'))
     name = vim.eval('input("请输入您的名字:")')
@@ -93,6 +99,8 @@ try:
             'name': name
         }, f)
     print('配置成功')
+except Exception as e:
+    print(e)
 except KeyboardInterrupt:
     print('用户已取消该操作')
     
