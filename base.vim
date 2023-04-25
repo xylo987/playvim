@@ -92,18 +92,18 @@ hi colorcolumn guibg=lightgrey
 hi folded ctermbg=gray ctermfg=black guibg=gray guifg=black gui=bold
 hi cursorline ctermbg=gray ctermfg=black guibg=gray guifg=black
 hi cursorcolumn ctermbg=gray ctermfg=black guibg=gray guifg=black
-hi Floaterm guibg=white guifg=black ctermbg=white ctermfg=black
-hi FloatermBorder guibg=pink guifg=gray
+hi Floaterm guibg=black guifg=green ctermbg=black ctermfg=green
+hi FloatermBorder guibg=black guifg=gray
 set fillchars=vert:\|,fold:\-,eob:\ 
 hi VertSplit term=none cterm=none gui=none guibg=black guifg=white
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 let g:NERDTreeDirArrowExpandable = '-'
 let g:NERDTreeDirArrowCollapsible = '<'
-let g:airline_theme='base16_adwaita'
-let g:floaterm_height = 0.3
+let g:airline_theme='angr'
+let g:floaterm_height = 0.99
 let g:floaterm_width = 0.99
 let g:floaterm_position = 'bottom'
-let g:floaterm_title = 'love($1/$2)'
+let g:floaterm_title = '终端($1/$2)'
 hi SpellBad ctermfg=015 ctermbg=000 cterm=none guifg=#FFFFFF guibg=#000000 gui=none
 
 
@@ -122,6 +122,10 @@ function! Run()
         else
             exec 'FloatermNew! --autoclose=0 --wintype=popup rustc % -o %< && ./%<'
         endif
+    elseif ext == 'c'
+        exec 'FloatermNew! --autoclose=1 --wintype=popup gcc % -o %< && ./%<'
+    elseif ext == 'vb'
+        exec 'FloatermNew! --autoclose=1 --wintype=popup dotnet build && dotnet run'
     else
         echo 'file not supported: '.expand('%:t')
     endif
@@ -142,12 +146,10 @@ nmap <F2> :NERDTreeToggle<cr>
 nmap <F3> :TagbarToggle<cr>
 nmap <F4> :call SnippetsFile()<cr>
 nmap <F5> :call Run()<cr>
-" F6 调试命令等待好的插件出现
 let g:floaterm_keymap_new    = '<F7>'
 let g:floaterm_keymap_prev   = '<F8>'
 let g:floaterm_keymap_next   = '<F9>'
 let g:floaterm_keymap_kill   = '<F10>'
-" F11 暂不设置
 let g:floaterm_keymap_toggle = '<F12>'
 nmap <leader>r :NERDTreeFind<cr>
 " python3的home环境变量
