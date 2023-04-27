@@ -8,7 +8,7 @@
 
 ```bash
 cd ~
-git clone https://github.com/syz-lm/playvim .vim_runtime
+git clone https://github.com/xylo987/playvim .vim_runtime
 echo 'source $HOME/.vim_runtime/__init__.vim' > .vimrc
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
