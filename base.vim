@@ -81,7 +81,7 @@ call plug#end()
 "
 "                               界面设置
 "
-color shine
+color darkblue
 set guioptions-=m  "menu bar
 set guioptions-=T  "toolbar
 set guioptions-=r  "scrollbar
