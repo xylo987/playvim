@@ -100,7 +100,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 let g:NERDTreeDirArrowExpandable = '-'
 let g:NERDTreeDirArrowCollapsible = '<'
 let g:airline_theme='angr'
-let g:floaterm_height = 0.99
+let g:floaterm_height = 0.40
 let g:floaterm_width = 0.99
 let g:floaterm_position = 'bottom'
 let g:floaterm_title = '终端($1/$2)'
